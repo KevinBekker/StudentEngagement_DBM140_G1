@@ -1,5 +1,6 @@
 # StudentEngagement XAI by Group 1 - DBM140
 This project is based on the following repository: https://github.com/sherkhan15/distarctor-Detection_Eyes_Emotions_CI
+
 It was expanded by [Kevin Bekker](https://github.com/KevinBekker), Huizhong Ye and Jing Li for the DBM140 "Embodying intelligent behavior in social context" course of the Industrial Design department at Eindhoven University of Technology.
 
 ## Installation and running the program
