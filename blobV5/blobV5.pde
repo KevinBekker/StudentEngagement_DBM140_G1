@@ -3,7 +3,7 @@ int close, semi, around, center, negative, positive, neutral = 0;
 //int engagelow, engagemid, engagehigh = 0;
 int rowCount = 0;
 
-//pie chat
+//pie chart
 float emotion_negpie;
 float emotion_pospie;
 float emotion_neupie;
@@ -44,7 +44,6 @@ float yOn=0.0;
 
 void setup() {
   size(250, 250);
-  //img = loadImage("bg.png");
 
   bx = width/9.0;
   by = height/8.0*6;
@@ -52,8 +51,7 @@ void setup() {
 
 void draw() {
   background(#272623);
-    //background(img);
-
+  //Redraw each time new data is in csv file
   close= 0;
   semi= 0;
   around= 0;
@@ -75,48 +73,59 @@ void draw() {
 
   float[] data={emotion_neupie, emotion_pospie, emotion_negpie};
   float[] data1={semipie, closepie, centerpie, aroundpie};
-  //pieChart(300, angles, data1);
-  //test if the cursor is over the blub
+  //See if the cursor is over the blub
   if (mouseX > bx-size && mouseX < bx+size && 
     mouseY > by-size && mouseY < by+size) {
     overBlob = true;
+    //If mousepressed then show most detail
     if (mousePressed == true) {
       drawBlob4(size+120, data, data1);
     } else {
+      //If hover show more detail
       drawBlob2();
     }
   } else {
+    //When not hovered show default blob
     overBlob = false;
     drawBlob();
   }
 }
 
 void loadData() {
+  //Load csv into sketch
   table = loadTable("../util/database.csv", "header");
+  
+  //Get amount of rows, representing amount of students
   rowCount = table.getRowCount();
+  
   for (TableRow row : table.rows()) {
+    //Define if eyes are closed, semi open, around the screen or in the middle looking
     if (row.getFloat("gw")==0) close++;
     else if (row.getFloat("gw")==1.5) semi++;
     else if (row.getFloat("gw")==2) around++;
     else center++;
 
+    //Define if emotion weight is positive, negative or neutral
     if (row.getFloat("ew")==0.25 || row.getFloat("ew")==0.3) negative++;
     else if (row.getFloat("ew")==0.6) positive++;
     else neutral++;
 
+    //Put overall engagement in one variable
     allengage += row.getFloat("ci");
-
-    //if (row.getInt("level")==0) engagelow++;
-    //else if (row.getInt("level")==1) engagemid++;
-    //else engagehigh++;
   }
 }
 
 void transData() {
-  //engagement = (engagelow*0.0+engagemid*1.0+engagehigh*2.0)/(rowCount*2.0);
+  
+  //Average engagement = allengagement divided by amount students
   engagement = allengage/rowCount;
+  
   size = map(engagement, 0, 1, 50, 80);
+  
+  //Attention is based on amount of students looking at center screen
   attention = center*1.0/rowCount;
+  
+  //Determine most prominent emotion in database csv.
   if (neutral >= negative && neutral >= positive) {
     emotionStatus = "neutral";
     emotion = (neutral*1.0)/rowCount;
@@ -136,18 +145,6 @@ void transData() {
   semipie=(semi*1.0/rowCount)*360;
   centerpie=(center*1.0/rowCount)*360;
   aroundpie=(around*1.0/rowCount)*360;
-
-  //println("sum="+rowCount);
-  //println("Engagement:");
-  ////println("engagelow="+engagelow+"  engagemid="+engagemid+"  engagehigh="+engagehigh+" overall engagement="+engagement);
-  //println("Emotion:");
-  //println("emtionStatus="+emotionStatus+" emotion="+emotion+" neutural="+neutral+" positive="+positive+" negative="+negative);
-  //println("Attention:");
-  //println("close="+close+" semi="+semi+" around="+around+" center"+center);
-  //println("emotion_neupie="+emotion_neupie);
-  //println("emotion_pospie="+emotion_pospie);
-  //println("emotion_negpie="+emotion_negpie);
-  //println(allengage);
   
 }
 
@@ -210,7 +207,6 @@ void drawNote() {
 }
 
 void drawBlob4(float diameter, float[] data, float[] data1) {
-  //translate(bx, by);
   float lastAngle=0;
   noStroke();
   beginShape();
