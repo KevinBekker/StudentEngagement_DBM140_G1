@@ -11,7 +11,7 @@ When running the Python script as well, it will update the final row in the csv 
 To run the sketch, please open up and run the file in the blobV5 folder.
 
 ### Python
-In order to run the Python script run the run_local_cv.py file in the root of the folder. Please check which Python version you are using, this might change the first word in the command (e.g., python3 instead of python).
+In order to run the Python script run the run_local_cv.py file in the root of the folder. Please check which Python version you are using, this might change the first argument in the command (e.g., python3 instead of python).
 
 ```
 python run_local_cv.py
